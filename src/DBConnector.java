@@ -7,7 +7,8 @@ import java.sql.SQLException;
         private static Connection con = null;
         private static String uName = "root";
         private static String pWord = "root123";
-        private static String Url = "jdbc:mysql://localhost:3306/myflowers?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false";
+        private static String db = "InterFloraII";
+        private static String Url = "jdbc:mysql://localhost:3306/InterFloraIV?serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false";
         //"jdbc:myDriver:myDatabase",
 
         private DBConnector() {
