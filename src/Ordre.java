@@ -1,22 +1,23 @@
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class Ordre {
-    private static int counter = 0;
     int id;
     int phone;
     List<Buket> buketter;
-    LocalDateTime ldt;
+    LocalDate ld;
     String status;
 
-    public Ordre(int phone, List<Buket> buketter) {
+    public Ordre(int id, int phone, List<Buket> buketter, LocalDate ld) {
         this.phone = phone;
         this.buketter = buketter;
-        ldt = LocalDateTime.now();
-        this.id = counter;
-        counter++;
+        this.id = id;
+        this.ld = ld;
         this.status = "CREATED";
     }
+
+
 
     public int getId() {
         return this.id;
