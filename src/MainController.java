@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class MainController {
     // datastrukturer
     List<Buket> bukets;
-    List<Buket> orders;
+    List<Ordre> orders;
     // andre ting
     Scanner sc;
 
@@ -29,11 +29,22 @@ public class MainController {
         }
     }
 
+    
+
     private void createOrder() {
         Ordre ordre = null;
         commitOrder(ordre);
     }
+    // UI services
+    public void printActions() {
+        System.out.println("1) indlæs buketter");
+        System.out.println("2) opret ordre");
+        System.out.println("3) vis alle ordrer");
+        System.out.println("9) exit");
+    }
 
+
+    // DataStore Services
     public void commitOrder(Ordre order) {
         //
         // sql ting
@@ -48,37 +59,32 @@ public class MainController {
         con = getMyConnection();
         try {
             stmt = con.createStatement();
-            //stmt.getGeneratedKeys();
-            //sql = "Select 'kurt'";
-            //sql = "Select now()";
             sql = "INSERT INTO orders (orderStatus, orderDate, customerID, orderItems) VALUES ";
             // now convert order-objekt to order-table
-            values = "(" + order.getStatus() + "," + order.getDate() + ","+ order.getPhone() ;
+            values = "(" + "'"
+                    +order.getStatus() + "','"
+                    + order.getDate() + "','"
+                    + order.getPhone() + "'," ;
+
             for (Buket b:order.getBuketter() ) {
                 buketsStr +=b.getId()+"@";
             }
-            values += buketsStr + ")";
-            LocalDate ld = LocalDate.now();
-            
-            //String tmpSql = "insert into orders (orderStatus) values ('CREATED')";
-            String tmpSql2 = "insert into orders (orderDate) values ('"+ld+"')";
+            values += "'"+buketsStr + "')";
+            sql += values;
 
-            //res = stmt.executeQuery(sql);
-            int myRes = stmt.executeUpdate(tmpSql2,Statement.RETURN_GENERATED_KEYS);
-            System.out.println(myRes);
+            int myRes = stmt.executeUpdate(sql,Statement.RETURN_GENERATED_KEYS);
             ResultSet r = stmt.getGeneratedKeys();
             r.next();
-            System.out.println(r.getInt(1));
-            //stmt.executeUpdate(tmpSql2, Statement.RETURN_GENERATED_KEYS);
-            //res = stmt.getGeneratedKeys();
-            //int myId = res.getInt(1);
+            int newId = r.getInt(1);
+            order.setId(newId);
+            orders.add(order);
+            con.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    // DataStore Services
     public void fillListWithBukets() {
         // int id, String name, int price
         // sql ting
@@ -110,13 +116,6 @@ public class MainController {
         }
     }
 
-
-    public void printActions() {
-        System.out.println("1) indlæs buketter");
-        System.out.println("2) opret ordre");
-        System.out.println("3) vis alle ordrer");
-        System.out.println("9) exit");
-    }
 
     public Connection getMyConnection() {
         // sql ting
