@@ -108,8 +108,6 @@ public class MainController {
     public List<Order> getAllOrdersDB() {
         List<Order> orders = new ArrayList<>();
         // hent fra db med kundenavn via kunde-tabel joined på kundeID
-        
-
 
         return orders;
     }
