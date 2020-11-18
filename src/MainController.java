@@ -29,7 +29,7 @@ public class MainController {
         }
     }
 
-    
+
 
     private void createOrder() {
         Ordre ordre = null;
@@ -115,7 +115,6 @@ public class MainController {
             e.printStackTrace();
         }
     }
-
 
     public Connection getMyConnection() {
         // sql ting
