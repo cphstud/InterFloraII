@@ -1,6 +1,7 @@
 import com.mysql.cj.x.protobuf.MysqlxCrud;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -56,14 +57,6 @@ public class MainController {
     }
 
     public void commitOrderPS(Order order) {
-        //insert into orders (orderStatus,OrderDate,customerID) values ("CREATED",date("2020-05-02"),7);
-        /*
-            private int orderID;
-    private String orderStatus;
-    private int customerID;
-    private List<Buket> orderItems;
-    private LocalDate ld;
-         */
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet res = null;
@@ -72,7 +65,6 @@ public class MainController {
         String values = "";
         String buketStr = "";
         // konstruér query-streng ud fra order-objektets egenskaber
-        // ('CREATED',
         sql += "INSERT INTO orders (orderStatus,OrderDate,customerID,orderItems) " +
                 "VALUES (?,?,?,?) ";
 
@@ -83,11 +75,11 @@ public class MainController {
         try {
             con = getConnection();
             stmt = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-            //stmt.executeUpdate(sql);
             stmt.setString(1,order.getOrderStatus());
             stmt.setDate(2,Date.valueOf(order.getLd()));
-            stmt.setInt(3,order.getOrderID());
+            stmt.setInt(3,order.getCustomerID());
             stmt.setString(4,buketStr);
+            System.out.println((stmt).toString());
 
             stmt.executeUpdate();
             res = stmt.getGeneratedKeys();

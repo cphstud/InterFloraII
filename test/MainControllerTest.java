@@ -54,13 +54,15 @@ public class MainControllerTest {
         List<Buket> buketter = new ArrayList<>();
         Buket buket1 = new Buket(3,"Mix bundt med 7 stilke pastel hortensia",275);
         Buket buket2 = new Buket(5,"Queen blomsterbuket",275);
+        Buket buket3 = new Buket(5,"Queen blomsterbuket",275);
         buketter.add(buket1);
         buketter.add(buket2);
-        int customerID = 32324512;
+        int customerID = 12123433;
         MainController mc = new MainController();
-        Order order = new Order(23232323, LocalDate.now());
+        Order order = new Order(customerID, LocalDate.now());
         order.addBuketToOrder(buket1);
         order.addBuketToOrder(buket2);
+        order.addBuketToOrder(buket3);
         mc.commitOrderPS(order);
     }
 }

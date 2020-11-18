@@ -12,7 +12,7 @@ public class Order {
     public Order(int customerID, LocalDate ld) {
         this.customerID = customerID;
         this.orderItems = new ArrayList<>();
-        this.ld = LocalDate.now();
+        this.ld = ld;
         this.orderStatus = "CREATED";
     }
 
