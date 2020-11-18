@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -13,6 +14,8 @@ public class MainController {
     MainController() {
         orders = new ArrayList<>();
         sc = new Scanner(System.in);
+        bukets = new ArrayList<>();
+        orders = new ArrayList<>();
     }
     public void runProgram() {
         int runChoice=0;
@@ -21,16 +24,70 @@ public class MainController {
             runChoice = sc.nextInt();
             switch (runChoice) {
                 case 1: fillListWithBukets();
+                case 2: createOrder();
             }
         }
     }
 
-    public void fillListWithBukets() {
+    private void createOrder() {
+        Ordre ordre = null;
+        commitOrder(ordre);
+    }
+
+    public void commitOrder(Ordre order) {
+        //
         // sql ting
         Connection con = null;
         Statement stmt = null;
         ResultSet res = null;
+
         String sql = "";
+        String values = "";
+        String buketsStr = "";
+
+        con = getMyConnection();
+        try {
+            stmt = con.createStatement();
+            //stmt.getGeneratedKeys();
+            //sql = "Select 'kurt'";
+            //sql = "Select now()";
+            sql = "INSERT INTO orders (orderStatus, orderDate, customerID, orderItems) VALUES ";
+            // now convert order-objekt to order-table
+            values = "(" + order.getStatus() + "," + order.getDate() + ","+ order.getPhone() ;
+            for (Buket b:order.getBuketter() ) {
+                buketsStr +=b.getId()+"@";
+            }
+            values += buketsStr + ")";
+            LocalDate ld = LocalDate.now();
+            
+            //String tmpSql = "insert into orders (orderStatus) values ('CREATED')";
+            String tmpSql2 = "insert into orders (orderDate) values ('"+ld+"')";
+
+            //res = stmt.executeQuery(sql);
+            int myRes = stmt.executeUpdate(tmpSql2,Statement.RETURN_GENERATED_KEYS);
+            System.out.println(myRes);
+            ResultSet r = stmt.getGeneratedKeys();
+            r.next();
+            System.out.println(r.getInt(1));
+            //stmt.executeUpdate(tmpSql2, Statement.RETURN_GENERATED_KEYS);
+            //res = stmt.getGeneratedKeys();
+            //int myId = res.getInt(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // DataStore Services
+    public void fillListWithBukets() {
+        // int id, String name, int price
+        // sql ting
+        Connection con = null;
+        Statement stmt = null;
+        ResultSet res = null;
+
+        String sql = "";
+        Buket tmpBuket = null;
 
         con = getMyConnection();
         try {
@@ -41,7 +98,11 @@ public class MainController {
             res = stmt.executeQuery(sql);
             while (res.next()) {
                 System.out.println(res.getString("buketIndhold"));
-                
+                int buketID = res.getInt("buketID");
+                String name = res.getString("buketIndhold");
+                int price = res.getInt("buketPris");
+                tmpBuket = new Buket(buketID,name,price);
+                bukets.add(tmpBuket);
             }
 
         } catch (SQLException e) {

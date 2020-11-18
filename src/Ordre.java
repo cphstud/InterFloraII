@@ -10,22 +10,33 @@ public class Ordre {
     LocalDate ld;
     String status;
 
-    public Ordre(int id, int phone, List<Buket> buketter, LocalDate ld) {
+    public Ordre(int phone, List<Buket> buketter, LocalDate ld) {
         this.phone = phone;
         this.buketter = buketter;
-        this.id = id;
         this.ld = ld;
         this.status = "CREATED";
     }
-    public Ordre(int id, int phone, LocalDate ld) {
+    public Ordre(int phone, LocalDate ld) {
         this.phone = phone;
         this.buketter = new ArrayList<>();
-        this.id = id;
         this.ld = ld;
         this.status = "CREATED";
     }
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    public List<Buket> getBuketter() {
+        return buketter;
+    }
 
+    public LocalDate getLd() {
+        return ld;
+    }
+
+    public LocalDate getDate() {
+        return this.ld;
+    }
 
     public int getId() {
         return this.id;
