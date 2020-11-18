@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Ordre {
@@ -16,6 +17,13 @@ public class Ordre {
         this.ld = ld;
         this.status = "CREATED";
     }
+    public Ordre(int id, int phone, LocalDate ld) {
+        this.phone = phone;
+        this.buketter = new ArrayList<>();
+        this.id = id;
+        this.ld = ld;
+        this.status = "CREATED";
+    }
 
 
 
@@ -25,6 +33,10 @@ public class Ordre {
 
     public int getPhone() {
         return this.phone;
+    }
+
+    public void addBuketToOrder(Buket buket) {
+        buketter.add(buket);
     }
 
     public void setStatus(String status) {
